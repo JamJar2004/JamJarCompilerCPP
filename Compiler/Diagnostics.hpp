@@ -6,6 +6,7 @@
 #include <concepts>
 
 #include "Generics/GenericNameSymbol.hpp"
+#include "NameSymbol.hpp"
 
 struct DiagnosticBase
 {
@@ -20,6 +21,8 @@ public:
     {
         _diagnostics.push_back(std::make_unique<TDiagnostic>(std::forward<TArgs...>(args...)));
     }
+
+    const std::vector<std::unique_ptr<DiagnosticBase>>& GetDiagnostics() const { return _diagnostics; }
 private:
     std::vector<std::unique_ptr<DiagnosticBase>> _diagnostics;
 };

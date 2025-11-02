@@ -15,6 +15,8 @@ class ScopeBase
 public:
     ScopeBase(std::vector<DeferredDefinition>& deferredDefinitions);
 
+    virtual ~ScopeBase() {}
+
     const std::vector<std::shared_ptr<DefinitionBase>> GetDefinitions() const { return _definitions; }
 
     void Define(std::shared_ptr<DefinitionBase> definition)
@@ -25,7 +27,7 @@ public:
     template<std::derived_from<DefinitionBase> TDefinition, typename... TArgs>
     void Define(TArgs&&... args) requires std::constructible_from<TDefinition, TArgs...>
     {
-        _definitions.push_back(std::make_shared<TDefinition>(std::forward<TArgs...>(args...)));
+        _definitions.push_back(std::make_shared<TDefinition>(args...));
     }
 
     void AddDeferredDefinition(ScopeBase& parent, std::shared_ptr<LinkedScopeBase> targetScope, std::shared_ptr<DefinitionBase> definition)

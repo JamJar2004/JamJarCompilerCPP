@@ -8,8 +8,6 @@
 struct GenericNameArgument;
 struct GenericValueArgument;
 
-
-
 using GenericArgument = std::variant<GenericNameArgument, GenericValueArgument>;
 
 struct NameSymbol

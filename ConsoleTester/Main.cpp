@@ -13,19 +13,15 @@ int main()
 {
     std::vector<DeferredDefinition> deferredDefinitions;
     GlobalScope rootScope(deferredDefinitions);
-
     auto privateModifier = std::make_shared<PrivateModifier>();
     auto publicModifier = std::make_shared<PublicModifier>();
-
-    auto type = std::make_shared<TypeDefinition>();
-
+    auto type = std::make_shared<Type>(deferredDefinitions);
     auto vector3Scope = std::make_shared<NamedScopeDefinition>(deferredDefinitions, publicModifier, NameSymbol("Vector3"), type);
     type->Define<PropertyDefinition>(privateModifier, NameSymbol("Float32"), std::string("X"));
     type->Define<PropertyDefinition>(privateModifier, NameSymbol("Float32"), std::string("Y"));
     type->Define<PropertyDefinition>(privateModifier, NameSymbol("Float32"), std::string("Z"));
-    
-    rootScope.Define(vector3Scope);
 
+    rootScope.Define(vector3Scope);
     DiagnosticSet diagnostics;
     auto linkedGlobalScope = std::make_shared<LinkedGlobalScope>();
     if (!rootScope.TryLinkDefinitions(linkedGlobalScope, nullptr))
@@ -39,6 +35,16 @@ int main()
             }
         }
     }
+    
+    for (auto& diagnostic : diagnostics.GetDiagnostics())
+    {
+        diagnostic->WriteMessage(std::cout);
+        std::cout << std::endl;
+    }
+
+    std::cout << "Hello World!" << std::endl;
+
+    return 0;
 
     //SubRoutineBuilder mainSubRoutine;
     //mainSubRoutine.AddInstruction(PushInstructionData { sizeof(size_t) });

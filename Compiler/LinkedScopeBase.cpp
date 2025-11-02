@@ -1,10 +1,9 @@
 #include "LinkedScopeBase.hpp"
 #include "LinkedDefinitions/LinkedNamedScopeDefinition.hpp"
-#include "LinkedDefinitions/LinkedPropertyDefinition.hpp"
 
-LinkedScopeBase::LinkedScopeBase(std::vector<DeferredDefinition>& deferredDefinitions) : LinkedScopeBase(deferredDefinitions) {}
 
-bool LinkedScopeBase::TryDefineProperty(std::shared_ptr<ModifierBase> modifier, const std::string& name, std::shared_ptr<LinkedTypeDefinitionBase> type)
+
+bool LinkedScopeBase::TryDefineProperty(std::shared_ptr<ModifierBase> modifier, const std::string& name, std::shared_ptr<LinkedTypeBase> type)
 {
     auto it = _variableIndices.find(name);
     if (it == _variableIndices.end())

@@ -2,34 +2,36 @@
 
 #include "../ScopeBase.hpp"
 
-class TypeDefinitionBase;
+class TypeBase;
 
 struct NamedScopeDefinitionBase : public ScopeBase, public DefinitionBase
 {
-    NamedScopeDefinitionBase(std::vector<DeferredDefinition>& deferredDefinitions, std::shared_ptr<ModifierBase> modifier, const std::string& name, std::shared_ptr<TypeDefinitionBase> typeDefinition) :
+    NamedScopeDefinitionBase(std::vector<DeferredDefinition>& deferredDefinitions, std::shared_ptr<ModifierBase> modifier, const std::string& name, std::shared_ptr<TypeBase> typeDefinition) :
         ScopeBase(deferredDefinitions), DefinitionBase(modifier), Name(name), TypeDefinition(typeDefinition) {}
 
     const std::string Name;
 
-    std::shared_ptr<TypeDefinitionBase> TypeDefinition;
+    std::shared_ptr<TypeBase> TypeDefinition;
 };
 
 struct NamedScopeDefinition : public NamedScopeDefinitionBase
 {
-    NamedScopeDefinition(std::vector<DeferredDefinition>& deferredDefinitions, std::shared_ptr<ModifierBase> modifier, const NameSymbol& name, std::shared_ptr<TypeDefinitionBase> typeDefinition) :
+    NamedScopeDefinition(std::vector<DeferredDefinition>& deferredDefinitions, std::shared_ptr<ModifierBase> modifier, const NameSymbol& name, std::shared_ptr<TypeBase> typeDefinition) :
         NamedScopeDefinitionBase(deferredDefinitions, modifier, name.Name, typeDefinition), Symbol(name) {}
 
     const NameSymbol Symbol;
 
-    virtual bool TryLink(ScopeBase& parent, std::shared_ptr<LinkedScopeBase> targetScope, DiagnosticSet* diagnostics) override;
+    bool TryLink(ScopeBase& parent, std::shared_ptr<LinkedScopeBase> targetScope, DiagnosticSet* diagnostics) override;
 };
 
 class TypeBase : public ScopeBase
 {
-    
+public:
+    TypeBase(std::vector<DeferredDefinition>& deferredDefinitions) : ScopeBase(deferredDefinitions) {}
 };
 
 class Type : public TypeBase
 {
-    bool TryLink(ScopeBase& parent, std::shared_ptr<LinkedScopeBase> targetScope, DiagnosticSet* diagnostics) override;
+public:
+    Type(std::vector<DeferredDefinition>& deferredDefinitions) : TypeBase(deferredDefinitions) {}
 };

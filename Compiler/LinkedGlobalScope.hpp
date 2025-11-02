@@ -4,5 +4,5 @@
 
 struct LinkedGlobalScope : public LinkedScopeBase 
 {
-    LinkedGlobalScope(std::vector<DeferredDefinition> deferredDefinitions) : LinkedScopeBase(deferredDefinitions) {}
+    LinkedGlobalScope() : LinkedScopeBase() {}
 };

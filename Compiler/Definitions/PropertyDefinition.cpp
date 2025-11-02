@@ -1,7 +1,7 @@
 #include "PropertyDefinition.hpp"
 
 #include "NamedScopeDefinition.hpp"
-#include "LinkedDefinitions/LinkedNamedScopeDefinition.hpp"
+#include "../LinkedDefinitions/LinkedNamedScopeDefinition.hpp"
 
 bool PropertyDefinition::TryLink(ScopeBase& parent, std::shared_ptr<LinkedScopeBase> targetScope, DiagnosticSet* diagnostics)
 {

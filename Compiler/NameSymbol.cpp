@@ -1,5 +1,7 @@
 #include "NameSymbol.hpp"
 
+#include <iostream>
+
 std::ostream& operator<<(std::ostream& target, const GenericArgument& genericArgument)
 {
     std::visit(GenericArgumentLoggerVisitor(target), genericArgument);
@@ -15,7 +17,8 @@ std::ostream& operator<<(std::ostream& target, const NameSymbol& name)
 
         for (size_t i = 0; i < name.GenericArguments.size() - 1; i++)
         {
-            target << name.GenericArguments[i] << ", ";
+            std::visit(GenericArgumentLoggerVisitor(target), name.GenericArguments[i]);
+            target << ", ";
         }
 
         target << name.GenericArguments[name.GenericArguments.size() - 1] << '>';

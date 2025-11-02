@@ -3,22 +3,24 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
+#include <optional>
 
 #include "Modifier.hpp"
 #include "NameSymbol.hpp"
 
+
 class LinkedNamedScopeDefinition;
 class LinkedPropertyDefinition;
-class LinkedTypeDefinitionBase;
+class LinkedTypeBase;
 
 class DeferredDefinition;
 
 class LinkedScopeBase
 {
 public:
-    LinkedScopeBase(std::vector<DeferredDefinition>& deferredDefinitions);
+    LinkedScopeBase() {}
 
-    bool TryDefineProperty(std::shared_ptr<ModifierBase> modifier, const std::string& name, std::shared_ptr<LinkedTypeDefinitionBase> type);
+    bool TryDefineProperty(std::shared_ptr<ModifierBase> modifier, const std::string& name, std::shared_ptr<LinkedTypeBase> type);
 
     bool TryDefineNamedScope(const std::string& name, std::shared_ptr<LinkedNamedScopeDefinition> namedScope);
 

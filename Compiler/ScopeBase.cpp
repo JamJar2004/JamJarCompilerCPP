@@ -1,4 +1,5 @@
 #include "ScopeBase.hpp"
+#include "LinkedScopeBase.hpp"
 
 ScopeBase::ScopeBase(std::vector<DeferredDefinition>& deferredDefinitions) :
     _deferredDefinitions(deferredDefinitions) {}

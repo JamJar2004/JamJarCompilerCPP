@@ -6,36 +6,36 @@
 #include "../LinkedScopeBase.hpp"
 #include "LinkedDefinitionBase.hpp"
 
-class LinkedTypeDefinitionBase;
+class LinkedTypeBase;
 
 class LinkedNamedScopeDefinition : public LinkedScopeBase, public LinkedDefinitionBase
 {
 public:
-    LinkedNamedScopeDefinition(std::vector<DeferredDefinition>& deferredDefinitions, std::shared_ptr<LinkedScopeBase> parent, std::shared_ptr<ModifierBase> modifier, const NameSymbol& name) : 
-        LinkedScopeBase(deferredDefinitions), LinkedDefinitionBase(*parent, modifier), Name(name) {}
+    LinkedNamedScopeDefinition(std::shared_ptr<LinkedScopeBase> parent, std::shared_ptr<ModifierBase> modifier, const NameSymbol& name) : 
+        LinkedDefinitionBase(*parent, modifier), Name(name) {}
 
     const NameSymbol Name;
 
-    std::shared_ptr<LinkedTypeDefinitionBase> Type;
+    std::shared_ptr<LinkedTypeBase> Type;
 };
 
-class LinkedTypeDefinitionBase : public LinkedScopeBase
+class LinkedTypeBase : public LinkedScopeBase
 {
 public:
     virtual size_t SizeInBytes() const = 0;
 };
 
-class LinkedTypeDefinition : public LinkedScopeBase
+class LinkedType : public LinkedScopeBase
 {
 public:
     virtual size_t SizeInBytes() const
     {
-        return 0;
+        return GetStride();
     }
 
 };
 
-class LinkedUInt32TypeDefinition : public LinkedTypeDefinitionBase
+class LinkedUInt32Type : public LinkedTypeBase
 {
 public:
     size_t SizeInBytes() const { return sizeof(uint32_t); }
