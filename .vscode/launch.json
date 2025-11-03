@@ -15,5 +15,5 @@
             "miDebuggerPath": "/usr/bin/gdb",
             "preLaunchTask": "build"
         }
-    ]
+    ],
 }

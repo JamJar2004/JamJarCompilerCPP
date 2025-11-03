@@ -36,3 +36,11 @@ public:
         context.StackPointer += Data.size();
     }
 };
+
+template<typename TValue>
+struct PushConstantValueInstruction : public PushConstantInstruction
+{
+public:
+    PushConstantValueInstruction(const TValue& value) : 
+        PushConstantInstruction(std::span<uint8_t>((uint8_t*)&value, sizeof(TValue))) {}
+};

@@ -8,7 +8,11 @@ class RuntimeContext
 {
 public:
     RuntimeContext(size_t memorySize, size_t stackSize, const std::vector<size_t>& labelIndices) :
-        Memory(new uint8_t[memorySize]), LabelIndices(labelIndices)
+        Memory(new uint8_t[memorySize]), 
+        LabelIndices(labelIndices),
+        InstructionPointer(0),
+        StackBasePointer(sizeof(size_t)),
+        StackPointer(sizeof(size_t))
     {
         _freeSpaces[stackSize] = memorySize - stackSize;
     }
@@ -41,13 +45,13 @@ public:
     TValue Pop()
     {
         StackPointer -= sizeof(TValue);
-        return *(TValue*)(Memory + StackPointer)
+        return *(TValue*)(Memory + StackPointer);
     }
 
     template<typename TValue>
     TValue& Read(size_t address)
     {
-        return *(TValue*)(Memory + address)
+        return *(TValue*)(Memory + address);
     }
 
     size_t Allocate(size_t sizeInBytes)

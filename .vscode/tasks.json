@@ -4,10 +4,7 @@
     {
       "type": "shell",
       "label": "build",
-      "command": "make",
-      "args": [
-        "-j"
-      ],
+      "command": "make clean && make -j",
       "options": {
         "cwd": "${workspaceFolder}"
       },
