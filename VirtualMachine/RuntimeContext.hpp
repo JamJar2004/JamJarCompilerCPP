@@ -2,12 +2,13 @@
 
 #include <stdint.h>
 #include <cstddef>
-#include <unordered_map>
+#include <vector>
 
 class RuntimeContext
 {
 public:
-    RuntimeContext(size_t memorySize, size_t stackSize) : Memory(new uint8_t[memorySize]) 
+    RuntimeContext(size_t memorySize, size_t stackSize, const std::vector<size_t>& labelIndices) :
+        Memory(new uint8_t[memorySize]), LabelIndices(labelIndices)
     {
         _freeSpaces[stackSize] = memorySize - stackSize;
     }
@@ -20,6 +21,8 @@ public:
     }
 
     RuntimeContext& operator=(const RuntimeContext&) = delete;
+
+    const std::vector<size_t>& LabelIndices;
 
     uint8_t* const Memory;
 
