@@ -52,21 +52,33 @@ int main()
     Executable executable;
     SubRoutine mainSubRoutine;
 
-    auto skipper = mainSubRoutine.CreateLabel();
+    auto conditionLabel = mainSubRoutine.CreateLabel();
+    auto endLabel = mainSubRoutine.CreateLabel();
 
-    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(10);
-    
-    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(5);
-    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(6);
+    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(0);
 
-    mainSubRoutine.AddInstruction<UIntCompareSmallerInstruction>(); 
-    mainSubRoutine.AddInstruction<JumpIfFalseInstruction>(skipper);
+    mainSubRoutine.SetLabelLocation(conditionLabel); 
 
-    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(12);
+    mainSubRoutine.AddInstruction<ReadInstruction>(sizeof(size_t), sizeof(size_t));
+    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(10000000);
 
-    mainSubRoutine.SetLabelLocation(skipper);
+    mainSubRoutine.AddInstruction<UIntCompareSmallerInstruction>();
 
+    mainSubRoutine.AddInstruction<JumpIfFalseInstruction>(endLabel);
+
+    mainSubRoutine.AddInstruction<ReadInstruction>(sizeof(size_t), sizeof(size_t));
     mainSubRoutine.AddInstruction<OutputInstruction<size_t>>(std::cout);
+
+    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(1);
+    mainSubRoutine.AddInstruction<ReadInstruction>(sizeof(size_t), sizeof(size_t));
+
+    mainSubRoutine.AddInstruction<UIntAddInstruction>();
+
+    mainSubRoutine.AddInstruction<WriteInstruction>(sizeof(size_t), sizeof(size_t));
+    
+    mainSubRoutine.AddInstruction<GotoInstruction>(conditionLabel);
+
+    mainSubRoutine.SetLabelLocation(endLabel);
 
     executable.AddSubRoutine(mainSubRoutine);
 
