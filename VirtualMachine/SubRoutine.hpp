@@ -23,6 +23,11 @@ public:
         return result;
     }
 
+    void SetLabelLocation(size_t label)
+    {
+        _labelIndices[label] = _instructions.size();
+    }
+
     const std::vector<std::shared_ptr<InstructionBase>>& GetInstructions() const { return _instructions; }
 
     const std::vector<size_t>& GetLabelIndices() const { return _labelIndices; }

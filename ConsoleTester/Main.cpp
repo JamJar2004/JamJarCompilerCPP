@@ -11,6 +11,10 @@
 #include "../VirtualMachine/Instructions/OutputInstruction.hpp"
 #include "../VirtualMachine/Instructions/PushInstruction.hpp"
 #include "../VirtualMachine/Instructions/BinaryInstruction.hpp"
+#include "../VirtualMachine/Instructions/CompareInstruction.hpp"
+#include "../VirtualMachine/Instructions/ReadInstruction.hpp"
+#include "../VirtualMachine/Instructions/WriteInstruction.hpp"
+#include "../VirtualMachine/Instructions/JumpInstruction.hpp"
 
 int main()
 {
@@ -47,9 +51,21 @@ int main()
 
     Executable executable;
     SubRoutine mainSubRoutine;
-    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(16777216);
-    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(8);
-    mainSubRoutine.AddInstruction<UIntRightShiftInstruction>();
+
+    auto skipper = mainSubRoutine.CreateLabel();
+
+    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(10);
+    
+    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(5);
+    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(6);
+
+    mainSubRoutine.AddInstruction<UIntCompareSmallerInstruction>(); 
+    mainSubRoutine.AddInstruction<JumpIfFalseInstruction>(skipper);
+
+    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(12);
+
+    mainSubRoutine.SetLabelLocation(skipper);
+
     mainSubRoutine.AddInstruction<OutputInstruction<size_t>>(std::cout);
 
     executable.AddSubRoutine(mainSubRoutine);
