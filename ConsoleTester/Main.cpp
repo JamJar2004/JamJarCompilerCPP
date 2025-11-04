@@ -10,6 +10,7 @@
 #include "../VirtualMachine/Executable.hpp"
 #include "../VirtualMachine/Instructions/OutputInstruction.hpp"
 #include "../VirtualMachine/Instructions/PushInstruction.hpp"
+#include "../VirtualMachine/Instructions/BinaryInstruction.hpp"
 
 int main()
 {
@@ -45,15 +46,10 @@ int main()
     // }
 
     Executable executable;
-
     SubRoutine mainSubRoutine;
-    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(1);
-    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(2);
-    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(3);
-    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(4);
-    mainSubRoutine.AddInstruction<OutputInstruction<size_t>>(std::cout);
-    mainSubRoutine.AddInstruction<OutputInstruction<size_t>>(std::cout);
-    mainSubRoutine.AddInstruction<OutputInstruction<size_t>>(std::cout);
+    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(16777216);
+    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(8);
+    mainSubRoutine.AddInstruction<UIntRightShiftInstruction>();
     mainSubRoutine.AddInstruction<OutputInstruction<size_t>>(std::cout);
 
     executable.AddSubRoutine(mainSubRoutine);

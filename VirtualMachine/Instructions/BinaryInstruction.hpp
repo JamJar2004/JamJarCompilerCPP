@@ -28,6 +28,9 @@ namespace std
 template<typename TOperand, std::invocable_r<TOperand, TOperand, TOperand> TInvokable>
 struct BinaryInstruction : public RegularInstructionBase
 {
+public:
+    BinaryInstruction() : _operation() {}
+
     void OnExecute(RuntimeContext& context) override
     {
         auto right = context.Pop<TOperand>();
@@ -39,18 +42,31 @@ private:
     const TInvokable _operation;
 };
 
-using IntAddInstruction = BinaryInstruction<size_t, std::plus<size_t>>;
-using IntSubInstruction = BinaryInstruction<size_t, std::minus<size_t>>;
-using IntMulInstruction = BinaryInstruction<size_t, std::multiplies<size_t>>;
-using IntDivInstruction = BinaryInstruction<size_t, std::divides<size_t>>;
-using IntModInstruction = BinaryInstruction<size_t, std::modulus<size_t>>;
+using UIntAddInstruction = BinaryInstruction<size_t, std::plus<size_t>>;
+using UIntSubInstruction = BinaryInstruction<size_t, std::minus<size_t>>;
+using UIntMulInstruction = BinaryInstruction<size_t, std::multiplies<size_t>>;
+using UIntDivInstruction = BinaryInstruction<size_t, std::divides<size_t>>;
+using UIntModInstruction = BinaryInstruction<size_t, std::modulus<size_t>>;
 
-using BitwiseAndInstruction = BinaryInstruction<size_t, std::bit_and<size_t>>;
-using BitwiseOrInstruction  = BinaryInstruction<size_t, std::bit_or<size_t>>;
-using BitwiseXorInstruction = BinaryInstruction<size_t, std::bit_xor<size_t>>;
+using UIntBitwiseAndInstruction = BinaryInstruction<size_t, std::bit_and<size_t>>;
+using UIntBitwiseOrInstruction  = BinaryInstruction<size_t, std::bit_or<size_t>>;
+using UIntBitwiseXorInstruction = BinaryInstruction<size_t, std::bit_xor<size_t>>;
 
-using  LeftShiftInstruction = BinaryInstruction<size_t, std::bit_left_shift<size_t>>;
-using RightShiftInstruction = BinaryInstruction<size_t, std::bit_right_shift<size_t>>;
+using  UIntLeftShiftInstruction = BinaryInstruction<size_t, std::bit_left_shift<size_t>>;
+using UIntRightShiftInstruction = BinaryInstruction<size_t, std::bit_right_shift<size_t>>;
+
+using SIntAddInstruction = BinaryInstruction<int64_t, std::plus<int64_t>>;
+using SIntSubInstruction = BinaryInstruction<int64_t, std::minus<int64_t>>;
+using SIntMulInstruction = BinaryInstruction<int64_t, std::multiplies<int64_t>>;
+using SIntDivInstruction = BinaryInstruction<int64_t, std::divides<int64_t>>;
+using SIntModInstruction = BinaryInstruction<int64_t, std::modulus<int64_t>>;
+
+using SIntBitwiseAndInstruction = BinaryInstruction<size_t, std::bit_and<size_t>>;
+using SIntBitwiseOrInstruction  = BinaryInstruction<size_t, std::bit_or<size_t>>;
+using SIntBitwiseXorInstruction = BinaryInstruction<size_t, std::bit_xor<size_t>>;
+
+using  SIntLeftShiftInstruction = BinaryInstruction<size_t, std::bit_left_shift<size_t>>;
+using SIntRightShiftInstruction = BinaryInstruction<size_t, std::bit_right_shift<size_t>>;
 
 using Float32AddInstruction = BinaryInstruction<float, std::plus<float>>;
 using Float32SubInstruction = BinaryInstruction<float, std::minus<float>>;

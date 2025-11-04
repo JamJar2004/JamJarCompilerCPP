@@ -48,6 +48,7 @@ std::optional<LinkedPropertyDefinition> LinkedScopeBase::FindProperty(const std:
     }
 
     auto result = _variables[it->second];
+    return result;
 }
 
 std::shared_ptr<LinkedNamedScopeDefinition> LinkedScopeBase::FindNamedScope(const LinkedScopeBase& sourceScope, const NameSymbol& name)
