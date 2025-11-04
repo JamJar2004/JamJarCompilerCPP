@@ -55,26 +55,44 @@ int main()
     auto conditionLabel = mainSubRoutine.CreateLabel();
     auto endLabel = mainSubRoutine.CreateLabel();
 
+    auto counterAddress = sizeof(size_t);
+
     mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(0);
+
+    //mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(0);
+    //mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(2);
+    //mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(4);
+    //mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(6);
+    //mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(8);
+    //mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(10);
+    //mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(12);
+    //mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(14);
+    //mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(16);
+    //mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(18);
+    //mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(20);
 
     mainSubRoutine.SetLabelLocation(conditionLabel); 
 
-    mainSubRoutine.AddInstruction<ReadInstruction>(sizeof(size_t), sizeof(size_t));
-    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(10000000);
+    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(counterAddress);
+    mainSubRoutine.AddInstruction<ReadInstruction>(sizeof(size_t));
+    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(100000);
 
     mainSubRoutine.AddInstruction<UIntCompareSmallerInstruction>();
 
     mainSubRoutine.AddInstruction<JumpIfFalseInstruction>(endLabel);
 
-    mainSubRoutine.AddInstruction<ReadInstruction>(sizeof(size_t), sizeof(size_t));
+    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(counterAddress);
+    mainSubRoutine.AddInstruction<ReadInstruction>(sizeof(size_t));
     mainSubRoutine.AddInstruction<OutputInstruction<size_t>>(std::cout);
 
     mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(1);
-    mainSubRoutine.AddInstruction<ReadInstruction>(sizeof(size_t), sizeof(size_t));
+    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(counterAddress);
+    mainSubRoutine.AddInstruction<ReadInstruction>(sizeof(size_t));
 
     mainSubRoutine.AddInstruction<UIntAddInstruction>();
 
-    mainSubRoutine.AddInstruction<WriteInstruction>(sizeof(size_t), sizeof(size_t));
+    mainSubRoutine.AddInstruction<PushConstantValueInstruction<size_t>>(counterAddress);
+    mainSubRoutine.AddInstruction<WriteInstruction>(sizeof(size_t));
     
     mainSubRoutine.AddInstruction<GotoInstruction>(conditionLabel);
 
@@ -82,7 +100,11 @@ int main()
 
     executable.AddSubRoutine(mainSubRoutine);
 
-    executable.Run(1024, 512);
+    //auto duration1 = executable.Run(1024, 512);
+    auto duration2 = executable.Run<2048>(1024);
+
+    //std::cout << "Execution Time: " << duration1.count() << "ms" << std::endl;
+    std::cout << "Execution Time: " << duration2.count() << "ms" << std::endl;
 
     return 0;
 }

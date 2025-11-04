@@ -41,6 +41,6 @@ template<typename TValue>
 struct PushConstantValueInstruction : public PushConstantInstruction
 {
 public:
-    PushConstantValueInstruction(const TValue& value) : 
-        PushConstantInstruction(std::span<uint8_t>((uint8_t*)&value, sizeof(TValue))) {}
+    PushConstantValueInstruction(const TValue& value, size_t count = 1) : 
+        PushConstantInstruction(std::span<uint8_t>((uint8_t*)&value, count * sizeof(TValue))) {}
 };

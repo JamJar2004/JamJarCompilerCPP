@@ -8,8 +8,8 @@
 class RuntimeContext
 {
 public:
-    RuntimeContext(size_t memorySize, size_t stackSize, const std::vector<size_t>& labelIndices) :
-        Memory(new uint8_t[memorySize]), 
+    RuntimeContext(uint8_t* memory, size_t memorySize, size_t stackSize, const std::vector<size_t>& labelIndices) :
+        Memory(memory), 
         LabelIndices(labelIndices),
         InstructionPointer(0),
         StackBasePointer(sizeof(size_t)),
@@ -19,11 +19,6 @@ public:
     }
 
     RuntimeContext(const RuntimeContext&) = delete;
-
-    ~RuntimeContext()
-    {
-        delete[] Memory;
-    }
 
     RuntimeContext& operator=(const RuntimeContext&) = delete;
 
