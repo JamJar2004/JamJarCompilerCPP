@@ -25,10 +25,10 @@ int main()
     auto privateModifier = std::make_shared<PrivateModifier>();
     auto publicModifier = std::make_shared<PublicModifier>();
     auto type = std::make_shared<Type>(deferredDefinitions);
-    auto vector3Scope = std::make_shared<NamedScopeDefinition>(deferredDefinitions, publicModifier, NameSymbol("Vector3"), type);
-    type->Define<PropertyDefinition>(privateModifier, NameSymbol("Float32"), std::string("X"));
-    type->Define<PropertyDefinition>(privateModifier, NameSymbol("Float32"), std::string("Y"));
-    type->Define<PropertyDefinition>(privateModifier, NameSymbol("Float32"), std::string("Z"));
+    auto vector3Scope = std::make_shared<NamedScopeDefinition>(deferredDefinitions, publicModifier, NameSymbol(LocationInfo(10, 1, 4, "Vector3.jam"), "Vector3"), type);
+    type->Define<PropertyDefinition>(privateModifier, NameSymbol(LocationInfo(10, 1, 4, "DUMMY"), "Float32"), "X");
+    type->Define<PropertyDefinition>(privateModifier, NameSymbol(LocationInfo(10, 1, 4, "DUMMY"), "Float32"), "Y");
+    type->Define<PropertyDefinition>(privateModifier, NameSymbol(LocationInfo(10, 1, 4, "DUMMY"), "Float32"), "Z");
     
     rootScope.Define(vector3Scope);
     DiagnosticSet diagnostics;
@@ -44,11 +44,10 @@ int main()
             }
         }
     }
-     
+    
     for (auto& diagnostic : diagnostics.GetDiagnostics())
     {
-         diagnostic->WriteMessage(std::cout);
-         std::cout << std::endl;
+        std::cout << *diagnostic << std::endl;
     }
 
     //Executable executable;

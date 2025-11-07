@@ -5,6 +5,8 @@
 #include <any>
 #include <variant>
 
+#include "Location.hpp"
+
 struct GenericNameArgument;
 struct GenericValueArgument;
 
@@ -12,11 +14,12 @@ using GenericArgument = std::variant<GenericNameArgument, GenericValueArgument>;
 
 struct NameSymbol
 {
-    NameSymbol(const std::string& name) : NameSymbol(name, {}) {}
+    NameSymbol(const LocationInfo& location, const std::string& name) : NameSymbol(location, name, {}) {}
     
-    NameSymbol(const std::string& name, const std::vector<GenericArgument>& genericArguments) :
-        Name(name), GenericArguments(genericArguments) {}
+    NameSymbol(const LocationInfo& location, const std::string& name, const std::vector<GenericArgument>& genericArguments) :
+        Name(name), GenericArguments(genericArguments), Location(location) {}
 
+    const LocationInfo Location;
     const std::string Name;
 
     const std::vector<GenericArgument> GenericArguments;

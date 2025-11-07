@@ -31,7 +31,7 @@ bool PropertyDefinition::TryLink(ScopeBase& parent, std::shared_ptr<LinkedScopeB
     {
         if (diagnostics)
         {
-            diagnostics->Report<PropertyNameAlreadyExistsDiagnostic>(Name);
+            diagnostics->Report<PropertyNameAlreadyExistsDiagnostic>(Type.Location, Name);
         }
         return false;
     }
