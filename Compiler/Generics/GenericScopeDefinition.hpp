@@ -2,6 +2,7 @@
 
 #include "GenericNameSymbol.hpp"
 #include "../Definitions/AliasDefinition.hpp"
+#include "../Definitions/NamedScopeDefinition.hpp"
 
 struct GenericArgumentAliasVisitor 
 {
@@ -27,8 +28,8 @@ private:
 
 class GenericScopeDefinition : public NamedScopeDefinitionBase
 {
-    GenericScopeDefinition(std::vector<DeferredDefinition>& deferredDefintions, const std::string& name, const std::vector<GenericParameter>& parameters, std::shared_ptr<TypeDefinitionBase> typeDefinition) : 
-        NamedScopeDefinitionBase(deferredDefintions, name, typeDefinition),
+    GenericScopeDefinition(const LocationInfo& location, std::vector<DeferredDefinition>& deferredDefintions, const std::shared_ptr<ModifierBase>& modifier, const std::string& name, const std::vector<GenericParameter>& parameters, std::shared_ptr<TypeBase> typeDefinition) : 
+        NamedScopeDefinitionBase(location, deferredDefintions, modifier, name, typeDefinition),
         Parameters(parameters)
     {
     }
@@ -37,9 +38,11 @@ class GenericScopeDefinition : public NamedScopeDefinitionBase
 
     std::shared_ptr<NamedScopeDefinition> TryCreate(const std::vector<GenericArgument>& arguments, DiagnosticSet* diagnostics)
     {   
+        auto symbol = NameSymbol(Location, Name, arguments);
+
         if (arguments.size() == Parameters.size())
         {
-            auto result = std::make_shared<NamedScopeDefinition>(GetDeferredDefinitions(), NameSymbol(Name, arguments), TypeDefinition);
+            auto result = std::make_shared<NamedScopeDefinition>(GetDeferredDefinitions(), symbol, TypeDefinition);
 
             for (size_t i = 0; i < Parameters.size(); i++)
             {
@@ -56,7 +59,7 @@ class GenericScopeDefinition : public NamedScopeDefinitionBase
         
         if (diagnostics)
         {
-            diagnostics->Report<ScopeNotFoundDiagnostic>(NameSymbol(Name, arguments));
+            diagnostics->Report<ScopeNotFoundDiagnostic>(symbol);
         }
 
         return nullptr;

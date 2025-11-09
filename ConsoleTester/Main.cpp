@@ -21,14 +21,18 @@
 int main()
 {
     std::vector<DeferredDefinition> deferredDefinitions;
-    GlobalScope rootScope(deferredDefinitions);
     auto privateModifier = std::make_shared<PrivateModifier>();
     auto publicModifier = std::make_shared<PublicModifier>();
+
+    GlobalScope rootScope(deferredDefinitions);
+
+    rootScope.Define<NamedScopeDefinition>(deferredDefinitions, publicModifier, NameSymbol(LocationInfo(1, 1, 1, "Float32.jam"), "Float32"), std::make_shared<PrimitiveType<float>>(deferredDefinitions));
+
     auto type = std::make_shared<Type>(deferredDefinitions);
     auto vector3Scope = std::make_shared<NamedScopeDefinition>(deferredDefinitions, publicModifier, NameSymbol(LocationInfo(10, 1, 4, "Vector3.jam"), "Vector3"), type);
-    type->Define<PropertyDefinition>(privateModifier, NameSymbol(LocationInfo(10, 1, 4, "DUMMY"), "Float32"), "X");
-    type->Define<PropertyDefinition>(privateModifier, NameSymbol(LocationInfo(10, 1, 4, "DUMMY"), "Float32"), "Y");
-    type->Define<PropertyDefinition>(privateModifier, NameSymbol(LocationInfo(10, 1, 4, "DUMMY"), "Float32"), "Z");
+    type->Define<PropertyDefinition>(privateModifier, LocationInfo(10, 1, 0, "DUMMY"), NameSymbol(LocationInfo(10, 1, 4, "DUMMY"), "Float32"), "X");
+    type->Define<PropertyDefinition>(privateModifier, LocationInfo(10, 2, 0, "DUMMY"), NameSymbol(LocationInfo(10, 2, 4, "DUMMY"), "Float32"), "Y");
+    type->Define<PropertyDefinition>(privateModifier, LocationInfo(10, 3, 0, "DUMMY"), NameSymbol(LocationInfo(10, 3, 4, "DUMMY"), "Float32"), "Z");
     
     rootScope.Define(vector3Scope);
     DiagnosticSet diagnostics;

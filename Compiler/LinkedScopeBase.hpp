@@ -7,10 +7,9 @@
 
 #include "Modifier.hpp"
 #include "NameSymbol.hpp"
-
+#include "LinkedDefinitions/LinkedPropertyDefinition.hpp"
 
 class LinkedNamedScopeDefinition;
-class LinkedPropertyDefinition;
 class LinkedTypeBase;
 
 class DeferredDefinition;
@@ -28,7 +27,7 @@ public:
 
     std::optional<LinkedPropertyDefinition> FindProperty(const std::string& name);
 
-    std::shared_ptr<LinkedNamedScopeDefinition> FindNamedScope(const LinkedScopeBase& sourceScope, const NameSymbol& name);
+    virtual std::shared_ptr<LinkedNamedScopeDefinition> FindNamedScope(const LinkedScopeBase& sourceScope, const NameSymbol& name);
 protected:
     size_t GetStride() const { return _stride; }
 private:

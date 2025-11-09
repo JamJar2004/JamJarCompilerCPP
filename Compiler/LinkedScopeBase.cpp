@@ -1,7 +1,6 @@
 #include "LinkedScopeBase.hpp"
 #include "LinkedDefinitions/LinkedNamedScopeDefinition.hpp"
-
-
+#include "LinkedDefinitions/LinkedPropertyDefinition.hpp"
 
 bool LinkedScopeBase::TryDefineProperty(std::shared_ptr<ModifierBase> modifier, const std::string& name, std::shared_ptr<LinkedTypeBase> type)
 {

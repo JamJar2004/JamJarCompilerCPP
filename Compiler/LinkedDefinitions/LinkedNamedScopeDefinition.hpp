@@ -6,8 +6,6 @@
 #include "../LinkedScopeBase.hpp"
 #include "LinkedDefinitionBase.hpp"
 
-class LinkedTypeBase;
-
 class LinkedNamedScopeDefinition : public LinkedScopeBase, public LinkedDefinitionBase
 {
 public:
@@ -17,26 +15,39 @@ public:
     const NameSymbol Name;
 
     std::shared_ptr<LinkedTypeBase> Type;
+
+    std::shared_ptr<LinkedNamedScopeDefinition> FindNamedScope(const LinkedScopeBase& sourceScope, const NameSymbol& name) override;
 };
 
 class LinkedTypeBase : public LinkedScopeBase
 {
 public:
+    LinkedTypeBase(LinkedNamedScopeDefinition& parent) : Parent(parent) {}
+
+    LinkedNamedScopeDefinition& Parent;
+
     virtual size_t SizeInBytes() const = 0;
+
+    std::shared_ptr<LinkedNamedScopeDefinition> FindNamedScope(const LinkedScopeBase& sourceScope, const NameSymbol& name) override;
 };
 
-class LinkedType : public LinkedScopeBase
+class LinkedType : public LinkedTypeBase
 {
 public:
-    virtual size_t SizeInBytes() const
+    LinkedType(LinkedNamedScopeDefinition& parent) : LinkedTypeBase(parent) {}
+
+    size_t SizeInBytes() const override
     {
         return GetStride();
     }
 
 };
 
-class LinkedUInt32Type : public LinkedTypeBase
+template<typename TPrimitive>   
+class LinkedPrimitiveType : public LinkedTypeBase
 {
 public:
-    size_t SizeInBytes() const { return sizeof(uint32_t); }
+    LinkedPrimitiveType(LinkedNamedScopeDefinition& parent) : LinkedTypeBase(parent) {}
+
+    size_t SizeInBytes() const override { return sizeof(TPrimitive); }
 };

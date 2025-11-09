@@ -3,11 +3,13 @@
 #include "../ScopeBase.hpp"
 
 class TypeBase;
+class LinkedTypeBase;
+class LinkedNamedScopeDefinition;
 
 struct NamedScopeDefinitionBase : public ScopeBase, public DefinitionBase
 {
-    NamedScopeDefinitionBase(std::vector<DeferredDefinition>& deferredDefinitions, std::shared_ptr<ModifierBase> modifier, const std::string& name, std::shared_ptr<TypeBase> typeDefinition) :
-        ScopeBase(deferredDefinitions), DefinitionBase(modifier), Name(name), TypeDefinition(typeDefinition) {}
+    NamedScopeDefinitionBase(const LocationInfo& location, std::vector<DeferredDefinition>& deferredDefinitions, std::shared_ptr<ModifierBase> modifier, const std::string& name, std::shared_ptr<TypeBase> typeDefinition) :
+        ScopeBase(deferredDefinitions), DefinitionBase(modifier, location), Name(name), TypeDefinition(typeDefinition) {}
 
     const std::string Name;
 
@@ -17,7 +19,7 @@ struct NamedScopeDefinitionBase : public ScopeBase, public DefinitionBase
 struct NamedScopeDefinition : public NamedScopeDefinitionBase
 {
     NamedScopeDefinition(std::vector<DeferredDefinition>& deferredDefinitions, std::shared_ptr<ModifierBase> modifier, const NameSymbol& name, std::shared_ptr<TypeBase> typeDefinition) :
-        NamedScopeDefinitionBase(deferredDefinitions, modifier, name.Name, typeDefinition), Symbol(name) {}
+        NamedScopeDefinitionBase(name.Location, deferredDefinitions, modifier, name.Name, typeDefinition), Symbol(name) {}
 
     const NameSymbol Symbol;
 
@@ -28,10 +30,31 @@ class TypeBase : public ScopeBase
 {
 public:
     TypeBase(std::vector<DeferredDefinition>& deferredDefinitions) : ScopeBase(deferredDefinitions) {}
+
+    virtual std::shared_ptr<LinkedTypeBase> CreateLinkedType(LinkedNamedScopeDefinition& parent) = 0;
 };
 
 class Type : public TypeBase
 {
 public:
     Type(std::vector<DeferredDefinition>& deferredDefinitions) : TypeBase(deferredDefinitions) {}
+
+    std::shared_ptr<LinkedTypeBase> CreateLinkedType(LinkedNamedScopeDefinition& parent) override;
 };
+
+template<typename TPrimitive>
+class PrimitiveType : public TypeBase
+{
+public:
+    PrimitiveType(std::vector<DeferredDefinition>& deferredDefinitions) : TypeBase(deferredDefinitions) {}
+
+    std::shared_ptr<LinkedTypeBase> CreateLinkedType(LinkedNamedScopeDefinition& parent) override;
+};
+
+#include "../LinkedDefinitions/LinkedNamedScopeDefinition.hpp"
+
+template<typename TPrimitive>
+inline std::shared_ptr<LinkedTypeBase> PrimitiveType<TPrimitive>::CreateLinkedType(LinkedNamedScopeDefinition& parent)
+{
+    return std::make_shared<LinkedPrimitiveType<TPrimitive>>(parent);
+}

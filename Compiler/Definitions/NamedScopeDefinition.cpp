@@ -9,8 +9,14 @@ bool NamedScopeDefinition::TryLink(ScopeBase& parent, std::shared_ptr<LinkedScop
 
     if (result && TypeDefinition)
     {
-        auto type = std::make_shared<LinkedType>();
+        auto type = TypeDefinition->CreateLinkedType(*scope);
+        scope->Type = type;
         return TypeDefinition->TryLinkDefinitions(type, diagnostics);
     }
     return result;
+}
+
+std::shared_ptr<LinkedTypeBase> Type::CreateLinkedType(LinkedNamedScopeDefinition& parent)
+{
+    return std::make_shared<LinkedType>(parent);
 }

@@ -11,9 +11,11 @@ class LinkedScopeBase;
 struct DefinitionBase
 {
 public:
-    DefinitionBase(std::shared_ptr<ModifierBase> modifier) : Modifier(modifier) {}
+    DefinitionBase(std::shared_ptr<ModifierBase> modifier, const LocationInfo& location) : 
+        Modifier(modifier), Location(location) {}
 
     const std::shared_ptr<ModifierBase> Modifier; 
+    const LocationInfo& Location;
 
     virtual bool TryLink(ScopeBase& parent, std::shared_ptr<LinkedScopeBase> targetScope, DiagnosticSet* diagnostics) = 0;
 };

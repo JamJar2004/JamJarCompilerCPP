@@ -8,7 +8,6 @@
 
 #include "NameSymbol.hpp"
 #include "Definitions/DefinitionBase.hpp"
-#include "LinkedDefinitions/LinkedPropertyDefinition.hpp"
 
 class ScopeBase
 {

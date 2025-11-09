@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "../Scope.hpp"
+#include "../ScopeBase.hpp"
 #include "DefinitionBase.hpp"
 
 struct AliasDefinition : public DefinitionBase
